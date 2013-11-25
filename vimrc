@@ -18,16 +18,18 @@ set incsearch
 set background=dark
 set hidden
 set backspace=indent,eol,start
-set textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 set ruler
 set wrap
 set dir=/tmp//
 set scrolloff=5
+set nofoldenable
+
+set textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 set ignorecase
 set smartcase
 
-set wildignore+=*.pyc
+set wildignore+=*.pyc,*.o,*.class
 
 let g:AckAllFiles = 0
 let g:AckCmd = 'ack --type-add ruby=.feature --ignore-dir=tmp 2> /dev/null'
@@ -35,10 +37,6 @@ let g:AckCmd = 'ack --type-add ruby=.feature --ignore-dir=tmp 2> /dev/null'
 let html_use_css=1
 let html_number_lines=0
 let html_no_pre=1
-
-let vimclojure#WantNailgun = 0
-let vimclojure#HighlightBuiltins = 1
-let vimclojure#ParenRainbow = 1
 
 let g:gist_clip_command = 'pbcopy'
 let g:gist_detect_filetype = 1
@@ -50,23 +48,26 @@ let g:fuzzy_ceiling = 50000
 let g:fuzzy_matching_limit = 10
 
 let g:no_html_toolbar = 'yes'
+let g:paredit_mode = 0
 
 let coffee_no_trailing_space_error = 1
 
-let NERDTreeIgnore=['\.pyc']
+let go_highlight_trailing_whitespace_error = 0
+let NERDTreeIgnore=['\.pyc$', '\.o$', '\.class$']
 
 let g:CommandTMaxHeight = 15
 let g:CommandTMatchWindowAtTop = 1
 let g:CommandTCancelMap='<Esc>'
 
+let g:NoseVirtualenv = ".env/bin/activate"
+
 autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
-
 autocmd FileType tex setlocal textwidth=78
+autocmd Filetype go setlocal textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 noexpandtab
 autocmd BufNewFile,BufRead *.txt setlocal textwidth=78
+autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 
-autocmd FileType ruby runtime ruby_mappings.vim
-autocmd FileType python runtime python_mappings.vim
 imap <C-L> <SPACE>=><SPACE>
 map <silent> <LocalLeader>cj :!clj %<CR>
 map <silent> <LocalLeader>rt :!ctags -R --exclude=".git\|.svn\|log\|tmp\|db\|pkg" --extra=+f --langmap=Lisp:+.clj<CR>
@@ -84,11 +85,11 @@ map <silent> <LocalLeader>bd :bufdo :bd<CR>
 map <silent> <LocalLeader>cc :TComment<CR>
 map <silent> <LocalLeader>uc :TComment<CR>
 
-map <silent> <LocalLeader>rl :wa<CR> :RunLastVimTmuxCommand<CR>
-map <silent> <LocalLeader>ri :wa<CR> :InspectVimTmuxRunner<CR>
-map <silent> <LocalLeader>rx :wa<CR> :CloseVimTmuxPanes<CR>
-map <silent> <LocalLeader>vp :PromptVimTmuxCommand<CR>
-vmap <silent> <LocalLeader>vs "vy :call RunVimTmuxCommand(@v)<CR>
+map <silent> <LocalLeader>rl :wa<CR> :VimuxRunLastCommand<CR>
+map <silent> <LocalLeader>ri :wa<CR> :VimuxInspectRunner<CR>
+map <silent> <LocalLeader>rx :wa<CR> :VimuxClosePanes<CR>
+map <silent> <LocalLeader>vp :VimuxPromptCommand<CR>
+vmap <silent> <LocalLeader>vs "vy :call VimuxRunLastCommand(@v)<CR>
 nmap <silent> <LocalLeader>vs vip<LocalLeader>vs<CR>
 
 command SudoW w !sudo tee %
@@ -104,11 +105,8 @@ if version >= 700
 endif
 
 if &t_Co == 256
-  colorscheme vibrantink
+  colorscheme jellybeans
 endif
-
-au FileType diff colorscheme desert
-au FileType git colorscheme desert
 
 " Highlight trailing whitespace
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
