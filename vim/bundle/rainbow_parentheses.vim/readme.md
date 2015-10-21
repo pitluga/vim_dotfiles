@@ -1,51 +1,50 @@
-# Better Rainbow Parentheses
+# ~~Better~~ Much simpler Rainbow Parentheses
 
-### Options:
+A heavily-rewritten fork of [kien/rainbow_parentheses.vim][k].
 
-```vim
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-```
+- Simpler commands and configuration
+- Automatic color extraction
+- Adjusts itself when color scheme is changed
+
+## Installation
+
+Using [vim-plug](https://github.com/junegunn/vim-plug):
 
 ```vim
-let g:rbpt_max = 16
+Plug 'junegunn/rainbow_parentheses.vim'
 ```
+
+## Commands
 
 ```vim
-let g:rbpt_loadcmd_toggle = 0
+" Activate
+:RainbowParentheses
+
+" Deactivate
+:RainbowParentheses!
+
+" Toggle
+:RainbowParentheses!!
+
+" See the enabled colors
+:RainbowParenthesesColors
+
+" Activation based on file type
+augroup rainbow_lisp
+  autocmd!
+  autocmd FileType lisp,clojure,scheme RainbowParentheses
+augroup END
 ```
 
-### Commands:
+## Customization
 
 ```vim
-:RainbowParenthesesToggle       " Toggle it on/off
-:RainbowParenthesesLoadRound    " (), the default when toggling
-:RainbowParenthesesLoadSquare   " []
-:RainbowParenthesesLoadBraces   " {}
-:RainbowParenthesesLoadChevrons " <>
+let g:rainbow#max_level = 16
+let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+
+" List of colors that you do not want. ANSI code or #RRGGBB
+let g:rainbow#blacklist = [233, 234]
 ```
 
-### Always On:
+[k]: https://github.com/kien/rainbow_parentheses.vim
 
-```vim
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-```
