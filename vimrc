@@ -61,6 +61,9 @@ let g:CommandTCancelMap='<Esc>'
 
 let g:NoseVirtualenv = ".env/bin/activate"
 
+let g:VimuxOrientation = "v"
+let g:VimuxUseNearest = 1
+
 autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType tex setlocal textwidth=78
