@@ -24,6 +24,7 @@ Plug 'pangloss/vim-javascript', {'commit': '1d8c2677d26d6b3950b90dc1636e63334c8e
 Plug 'rodjek/vim-puppet', {'commit': 'd881b93dc4a8ed1374ad44439aeeb47808a6b91a'}
 Plug 'rust-lang/rust.vim', {'commit': 'e651851c7455286f0ba42c46777e9677c68796ac'}
 Plug 'scrooloose/nerdtree', {'tag': '5.0.0'}
+Plug 'scrooloose/syntastic', { 'tag': '3.7.0' }
 Plug 'tomtom/tcomment_vim', {'tag': '3.08'}
 Plug 'tpope/vim-endwise', {'commit': '0067ceda37725d01b7bd5bf249d63b1b5d4e2ab4', 'for': ['ruby']}
 Plug 'tpope/vim-fugitive', {'commit': '008b9570860f552534109b4f618cf2ddd145eeb4'}
@@ -147,3 +148,11 @@ set statusline+=%P                        " percentage of file
 set undodir=~/.config/nvim/undodir
 set undofile
 set undoreload=10000
+
+" Syntastic settings
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_ruby_rubocop_exe = 'RUBYLIB=lib rubocop'
