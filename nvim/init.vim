@@ -165,3 +165,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_ruby_rubocop_exe = 'RUBYLIB=lib rubocop'
+
+function! GitGrepWord()
+  cgetexpr system("git grep -n '" . expand("<cword>") . "'")
+  cwin
+  echo 'Number of matches: ' . len(getqflist())
+endfunction
+command! -nargs=0 GitGrepWord :call GitGrepWord()
+nnoremap <silent> <Leader>gw :GitGrepWord<CR>
