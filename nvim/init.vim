@@ -93,6 +93,9 @@ nnoremap <silent> <leader>rb :wa<CR> :TestFile<CR>
 nnoremap <silent> <leader>ra :wa<CR> :TestSuite<CR>
 nnoremap <silent> <leader>rl :wa<CR> :TestLast<CR>
 
+" Map :W to :w to save frustrations
+:command W w
+
 let g:neoterm_position = "vertical"
 let g:neoterm_size = "100"
 
