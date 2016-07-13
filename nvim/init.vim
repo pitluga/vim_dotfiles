@@ -116,7 +116,11 @@ autocmd BufNewFile,BufRead *.txt setlocal textwidth=78
 autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 
 imap <C-L> <SPACE>=><SPACE>
-map <silent> <LocalLeader>rt :!ctags -R --exclude=".git" --exclude="log" --exclude="tmp" --exclude="db" --exclude="pkg" --exclude="deps" --exclude="_build" --extra=+f .<CR>
+if executable("starscope")
+  map <silent> <LocalLeader>rt :!starscope -e ctags && starscope -e cscope<CR>
+else
+  map <silent> <LocalLeader>rt :!ctags -R --exclude=".git" --exclude="log" --exclude="tmp" --exclude="db" --exclude="pkg" --exclude="deps" --exclude="_build" --extra=+f .<CR>
+endif
 map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
 map <silent> <LocalLeader>nf :NERDTreeFind<CR>
 map <silent> <leader>ff :CtrlP<CR>
@@ -176,3 +180,14 @@ function! GitGrepWord()
 endfunction
 command! -nargs=0 GitGrepWord :call GitGrepWord()
 nnoremap <silent> <Leader>gw :GitGrepWord<CR>
+
+" cscope settings
+set cscopetag " CTRL+] searches scope.out in addition to ctags
+
+" add any database in current directory
+if filereadable("cscope.out")
+    cs add cscope.out
+endif
+
+" CTRL+\ => find (c)allers of function under cursor
+map <C-\> :cs find c <C-R>=expand("<cword>")<CR><CR>
