@@ -15,7 +15,7 @@ Plug 'ctrlpvim/ctrlp.vim', {'tag': '1.80'}
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
 Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
 Plug 'jtratner/vim-flavored-markdown', {'tag': 'v0.2'}
-Plug 'kassio/neoterm', {'commit': 'e6011bfb9cea42c98363d4114cb724fa51cca33d'} | Plug 'janko-m/vim-test', {'tag': 'v2.1.0'}
+Plug 'janko-m/vim-test', {'tag': 'v2.1.0'}
 Plug 'pangloss/vim-javascript', {'tag': '1.2.5.1'}
 Plug 'scrooloose/nerdtree', {'tag': '5.0.0'}
 Plug 'scrooloose/syntastic', { 'tag': '3.9.0' }
