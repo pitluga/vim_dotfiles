@@ -61,7 +61,7 @@ let g:rubycomplete_buffer_loading = 1
 
 let g:no_html_toolbar = 'yes'
 
-let NERDTreeIgnore=['\.pyc$', '\.o$', '\.class$']
+let NERDTreeIgnore=['\.pyc$', '\.o$', '\.class$', '__pycache__']
 
 let g:ctrlp_match_window = "top,order:ttb"
 
