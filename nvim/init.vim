@@ -10,6 +10,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug '~/.config/nvim/local-plugins/color-schemes'
 Plug '~/.config/nvim/local-plugins/language-mappings'
 
+Plug 'benmills/vimux', { 'tag': '1.0.0' }
 Plug 'benekastah/neomake', {'commit': 'c15d51ea9f622b8bce469a18833a6ac64f6a1193'}
 Plug 'ctrlpvim/ctrlp.vim', {'tag': '1.80'}
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
@@ -71,7 +72,7 @@ let g:ctrlp_prompt_mappings = {
   \ 'PrtHistory(1)':        ['<c-k>'],
 \ }
 
-let test#strategy = "neoterm"
+let test#strategy = "vimux"
 
 function! ClearTransform(cmd) abort
     return 'clear;' .a:cmd
@@ -79,6 +80,7 @@ endfunction
 
 let g:test#custom_transformations = {'clear': function('ClearTransform')}
 let g:test#transformation = 'clear'
+let test#python#runner = 'nose'
 
 nnoremap <silent> <leader>rf :wa<CR> :TestNearest<CR>
 nnoremap <silent> <leader>rb :wa<CR> :TestFile<CR>
