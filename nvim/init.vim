@@ -10,13 +10,13 @@ call plug#begin('~/.config/nvim/plugged')
 Plug '~/.config/nvim/local-plugins/color-schemes'
 Plug '~/.config/nvim/local-plugins/language-mappings'
 
-Plug 'benmills/vimux', { 'tag': '1.0.0' }
 Plug 'benekastah/neomake', {'commit': 'c15d51ea9f622b8bce469a18833a6ac64f6a1193'}
+Plug 'benmills/vimux', { 'tag': '1.0.0' }
 Plug 'ctrlpvim/ctrlp.vim', {'tag': '1.80'}
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
+Plug 'janko-m/vim-test', {'tag': 'v2.1.0'}
 Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
 Plug 'jtratner/vim-flavored-markdown', {'tag': 'v0.2'}
-Plug 'janko-m/vim-test', {'tag': 'v2.1.0'}
 Plug 'pangloss/vim-javascript', {'tag': '1.2.5.1'}
 Plug 'scrooloose/nerdtree', {'tag': '5.0.0'}
 Plug 'scrooloose/syntastic', { 'tag': '3.9.0' }
