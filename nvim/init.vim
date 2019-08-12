@@ -80,7 +80,8 @@ endfunction
 
 let g:test#custom_transformations = {'clear': function('ClearTransform')}
 let g:test#transformation = 'clear'
-let test#python#runner = 'nose'
+let test#python#runner = 'pytest'
+let test#python#pytest#executable = 'python -m pytest'
 
 nnoremap <silent> <leader>rf :wa<CR> :TestNearest<CR>
 nnoremap <silent> <leader>rb :wa<CR> :TestFile<CR>
