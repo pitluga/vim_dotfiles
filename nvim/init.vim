@@ -165,9 +165,13 @@ set undoreload=10000
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_ruby_rubocop_exe = 'RUBYLIB=lib rubocop'
+let g:syntastic_python_checkers = ['pylint', 'mypy']
+let g:syntastic_python_pylint_exe = 'PYTHONPATH=. .venv/bin/pylint'
+let g:syntastic_python_mypy_exe = 'PYTHONPATH=. .venv/bin/mypy'
 
 function! GitGrepWord()
   cgetexpr system("git grep -n '" . expand("<cword>") . "'")
