@@ -18,7 +18,7 @@ Plug 'tomtom/tcomment_vim', {'tag': '3.08.1'} " commentin code
 Plug 'tpope/vim-fugitive', {'tag': 'v2.4'} " git
 Plug 'tpope/vim-ragtag', {'tag': 'v2.0'} " HTML
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " autocomplete
+Plug 'dense-analysis/ale'
 
 call plug#end()
 
@@ -141,70 +141,18 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
 " ALE
+let g:ale_sign_column_always = 1
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 1
+let g:ale_fix_on_save = 1
 let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
-
-" coc
-" " Give more space for displaying messages.
-set cmdheight=2
-let g:coc_global_extensions = ['coc-python']
-" CTRL+SPACE auto-complete
-inoremap <silent><expr> <c-space> coc#refresh()
-autocmd FileType python let b:coc_root_patterns = ['.git', 'envs']
-
-
-" Better display for messages
-"set cmdheight=2
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
-
-" Use `lp` and `ln` for navigate diagnostics
-nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> <leader>lt <Plug>(coc-type-definition)
-nmap <silent> <leader>li <Plug>(coc-implementation)
-nmap <silent> <leader>lf <Plug>(coc-references)
-
-" Remap for rename current word
-nmap <leader>lr <Plug>(coc-rename)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-
-" Language Server
-"let g:lsp_signs_enabled = 1
-"let g:lsp_diagnostics_enabled = 1
-"
-"function! s:on_lsp_buffer_enabled() abort
-"    setlocal omnifunc=lsp#complete
-"    setlocal signcolumn=yes
-"    nmap <buffer> gd <plug>(lsp-definition)
-"    nmap <buffer> <f2> <plug>(lsp-rename)
-"    " refer to doc to add more commands
-"endfunction
-"
-"" jump to definition
-"nnoremap <silent> gd :LspDefinition<CR>
+let g:ale_linters = {
+\ 'python': ['pylint', 'mypy'],
+\}
+nnoremap <silent> gd :ALEGoToDefinition<CR>
+nnoremap <silent> gr :ALEFindReferences<CR>
 
 function! GitGrepWord()
   cgetexpr system("git grep -n '" . expand("<cword>") . "'")
