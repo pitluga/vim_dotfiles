@@ -149,7 +149,15 @@ let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 let g:ale_linters = {
-\ 'python': ['pylint', 'mypy'],
+\ 'python': ['pylint', 'mypy', 'pyls'],
+\}
+let g:ale_python_pyls_executable = '/home/tpitluga/pytools/.venv/bin/pyls'
+let g:ale_python_pyls_config = {
+\  'pyls': {
+\    'plugins': {
+\      'pycodestyle': { 'enabled': v:false },
+\    }
+\  },
 \}
 nnoremap <silent> gd :ALEGoToDefinition<CR>
 nnoremap <silent> gr :ALEFindReferences<CR>
