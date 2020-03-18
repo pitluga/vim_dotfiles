@@ -169,13 +169,3 @@ function! GitGrepWord()
 endfunction
 command! -nargs=0 GitGrepWord :call GitGrepWord()
 nnoremap <silent> <Leader>gw :GitGrepWord<CR>
-
-" cscope settings
-
-" add any database in current directory
-if filereadable("cscope.out")
-    cs add cscope.out
-endif
-
-" CTRL+\ => find (c)allers of function under cursor
-map <C-\> :cs find c <C-R>=expand("<cword>")<CR><CR>
