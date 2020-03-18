@@ -151,7 +151,7 @@ let g:ale_fixers = {
 let g:ale_linters = {
 \ 'python': ['pylint', 'mypy', 'pyls'],
 \}
-let g:ale_python_pyls_executable = '/home/tpitluga/pytools/.venv/bin/pyls'
+let g:ale_python_pyls_executable = $HOME . '/.vim/tools/py/bin/pyls'
 let g:ale_python_pyls_config = {
 \  'pyls': {
 \    'plugins': {
