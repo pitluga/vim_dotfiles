@@ -160,6 +160,7 @@ let g:ale_python_pyls_config = {
 \}
 nnoremap <silent> gd :ALEGoToDefinition<CR>
 nnoremap <silent> gr :ALEFindReferences<CR>
+set omnifunc=ale#completion#OmniFunc
 
 function! GitGrepWord()
   cgetexpr system("git grep -n '" . expand("<cword>") . "'")
