@@ -1,15 +1,26 @@
 set nocompatible
 syntax on
 
-if &shell == "/usr/bin/sudosh"
-  set shell=/bin/bash
-endif
+call plug#begin('~/.vim/plugged')
 
-filetype off
-call pathogen#runtime_append_all_bundles()
-filetype plugin indent on
+Plug '~/.vim/local-plugins/color-schemes'
+Plug '~/.vim/local-plugins/language-mappings'
 
-compiler ruby
+Plug 'benmills/vimux', { 'tag': '1.0.0' }
+Plug 'ctrlpvim/ctrlp.vim', {'tag': '1.80'} " fuzzy finder
+Plug 'fatih/vim-go', {'tag': 'v1.18'}
+Plug 'janko-m/vim-test', {'tag': 'v2.1.0'}
+Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
+Plug 'jtratner/vim-flavored-markdown', {'tag': 'v0.2'}
+Plug 'pangloss/vim-javascript', {'tag': '1.2.5.1'}
+Plug 'scrooloose/nerdtree', {'tag': '5.0.0'} " file tree
+Plug 'tomtom/tcomment_vim', {'tag': '3.08.1'} " commentin code
+Plug 'tpope/vim-fugitive', {'tag': 'v2.4'} " git
+Plug 'tpope/vim-ragtag', {'tag': 'v2.0'} " HTML
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " autocomplete
+
+call plug#end()
 
 set hlsearch
 set number
@@ -23,125 +34,177 @@ set wrap
 set dir=/tmp//
 set scrolloff=5
 set nofoldenable
-
-set textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-
+" allow CMD+C to copy
+set mouse=
 set ignorecase
 set smartcase
-
 set wildignore+=*.pyc,*.o,*.class
 
-let g:AckAllFiles = 0
-let g:AckCmd = 'ack --type-add ruby=.feature --ignore-dir=tmp 2> /dev/null'
+set textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType tex setlocal textwidth=78
+autocmd Filetype go setlocal noexpandtab
+autocmd FileType rust setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd BufNewFile,BufRead *.txt setlocal textwidth=78
+autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 
 let html_use_css=1
 let html_number_lines=0
 let html_no_pre=1
-
-let g:gist_clip_command = 'pbcopy'
-let g:gist_detect_filetype = 1
+let g:no_html_toolbar = 'yes'
 
 let g:rubycomplete_buffer_loading = 1
 
-let g:fuzzy_ignore = "*.log,tmp/*,db/sphinx/*,data,*.class,*.pyc"
-let g:fuzzy_ceiling = 50000
-let g:fuzzy_matching_limit = 10
-
-let g:no_html_toolbar = 'yes'
-let g:paredit_mode = 0
-
-let coffee_no_trailing_space_error = 1
-
-let go_highlight_trailing_whitespace_error = 0
-let NERDTreeIgnore=['\.pyc$', '\.o$', '\.class$']
-
-let g:CommandTMaxHeight = 15
-let g:CommandTMatchWindowAtTop = 1
-let g:CommandTCancelMap='<Esc>'
-
-let g:NoseVirtualenv = ".env/bin/activate"
-
-let g:VimuxOrientation = "v"
-let g:VimuxUseNearest = 1
-
-autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4
-autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
-autocmd FileType tex setlocal textwidth=78
-autocmd Filetype go setlocal textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 noexpandtab
-autocmd BufNewFile,BufRead *.txt setlocal textwidth=78
-autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
-
-imap <C-L> <SPACE>=><SPACE>
-map <silent> <LocalLeader>cj :!clj %<CR>
-map <silent> <LocalLeader>rt :!ctags -R --exclude=".git\|.svn\|log\|tmp\|db\|pkg" --extra=+f --langmap=Lisp:+.clj<CR>
+" NERDTree
+let NERDTreeIgnore=['\.pyc$', '\.o$', '\.class$', '__pycache__']
 map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
-map <silent> <LocalLeader>nr :NERDTree<CR>
 map <silent> <LocalLeader>nf :NERDTreeFind<CR>
-map <silent> <LocalLeader>gd :e product_diff.diff<CR>:%!git diff<CR>:setlocal buftype=nowrite<CR>
-map <silent> <LocalLeader>pd :e product_diff.diff<CR>:%!svn diff<CR>:setlocal buftype=nowrite<CR>
-map <silent> <LocalLeader>nh :nohls<CR>
-map <LocalLeader>aw :Ack '<C-R><C-W>'
-map <silent> <LocalLeader>bd :bufdo :bd<CR>
-map <silent> <LocalLeader>cc :TComment<CR>
-map <silent> <LocalLeader>uc :TComment<CR>
 
-map <silent> <LocalLeader>rl :wa<CR> :VimuxRunLastCommand<CR>
-map <silent> <LocalLeader>ri :wa<CR> :VimuxInspectRunner<CR>
-map <silent> <LocalLeader>rx :wa<CR> :VimuxClosePanes<CR>
-map <silent> <LocalLeader>vp :VimuxPromptCommand<CR>
-vmap <silent> <LocalLeader>vs "vy :call VimuxRunLastCommand(@v)<CR>
-nmap <silent> <LocalLeader>vs vip<LocalLeader>vs<CR>
+" ctrlp
+let g:ctrlp_custom_ignore = 'node_modules\|_build\|deps\|elm-stuff|envs/default'
+let g:ctrlp_match_window = "top,order:ttb"
+let g:ctrlp_prompt_mappings = {
+  \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
+  \ 'PrtSelectMove("k")':   ['<c-p>','<c-k>', '<up>'],
+  \ 'PrtHistory(-1)':       ['<c-j>'],
+  \ 'PrtHistory(1)':        ['<c-k>'],
+\ }
+map <silent> <leader>ff :CtrlP<CR>
+map <silent> <leader>fb :CtrlPBuffer<CR>
+map <silent> <leader>fr :CtrlPClearCache<CR>
 
-command SudoW w !sudo tee %
-cnoremap <Tab> <C-L><C-D>
+" vim-test
+let g:test#strategy = "vimux"
+let g:test#preserve_screen = 0
+let g:test#python#runner = 'pytest'
+let g:test#python#pytest#executable = 'envs/default/bin/python -m pytest'
+let g:test#python#pytest#file_pattern = '^\(test_.*\|.*_test\)\.py$'
 
+nnoremap <silent> <leader>rf :wa<CR> :TestNearest<CR>
+nnoremap <silent> <leader>rb :wa<CR> :TestFile<CR>
+nnoremap <silent> <leader>ra :wa<CR> :TestSuite<CR>
+nnoremap <silent> <leader>rl :wa<CR> :TestLast<CR>
+
+" Map :W to :w to save frustrations
+:command W w
+" j and k move the wraps
 nnoremap <silent> k gk
 nnoremap <silent> j gj
+" cap Y acts like other caps
 nnoremap <silent> Y y$
 
-if version >= 700
-  autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_us
-  autocmd FileType tex setlocal spell spelllang=en_us
-endif
+" vim-go
+let g:go_highlight_trailing_whitespace_error = 0
+
+" ruby
+imap <C-L> <SPACE>=><SPACE>
+map <silent> <LocalLeader>rt :!ctags -R --exclude=".git" --exclude="log" --exclude="tmp" --exclude="db" --exclude="pkg" --exclude="deps" --exclude="_build" --extra=+f .<CR>
+map <silent> <LocalLeader>nh :nohls<CR>
+map <silent> <LocalLeader>bd :bufdo :bd<CR>
+map <silent> <LocalLeader>cc :TComment<CR>
+
+autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_us
+autocmd FileType tex setlocal spell spelllang=en_us
 
 if &t_Co == 256
   colorscheme jellybeans
 endif
 
-" Highlight trailing whitespace
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd BufRead,InsertLeave * match ExtraWhitespace /\s\+$/
-" Set up highlight group & retain through colorscheme changes
+
 highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 map <silent> <LocalLeader>ws :highlight clear ExtraWhitespace<CR>
 
-" Highlight too-long lines
-autocmd BufRead,InsertEnter,InsertLeave * 2match LineLengthError /\%126v.*/
-highlight LineLengthError ctermbg=black guibg=black
-autocmd ColorScheme * highlight LineLengthError ctermbg=black guibg=black
-
-" Pretty colors for fuzzyfinder menus
-highlight Pmenu ctermfg=black ctermbg=gray
-highlight PmenuSel ctermfg=black ctermbg=white
-
 set laststatus=2
+
 set statusline=
 set statusline+=%<\                       " cut at start
 set statusline+=%2*[%n%H%M%R%W]%*\        " buffer number, and flags
 set statusline+=%-40f\                    " relative path
+
 set statusline+=%=                        " seperate between right- and left-aligned
 set statusline+=%1*%y%*%*\                " file type
 set statusline+=%10(L(%l/%L)%)\           " line
 set statusline+=%2(C(%v/125)%)\           " column
 set statusline+=%P                        " percentage of file
 
-if version >= 703
-  set undodir=~/.vim/undodir
-  set undofile
-  set undoreload=10000 "maximum number lines to save for undo on a buffer reload
-endif
-set undolevels=1000 "maximum number of changes that can be undone
+set undodir=~/.config/nvim/undodir
+set undofile
+set undoreload=10000
+
+" Auto complete
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+
+" ALE
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
+
+" coc
+" " Give more space for displaying messages.
+set cmdheight=2
+let g:coc_global_extensions = ['coc-python']
+" CTRL+SPACE auto-complete
+inoremap <silent><expr> <c-space> coc#refresh()
+autocmd FileType python let b:coc_root_patterns = ['.git', 'envs']
+
+
+" Better display for messages
+"set cmdheight=2
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+
+" Use `lp` and `ln` for navigate diagnostics
+nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> <leader>lt <Plug>(coc-type-definition)
+nmap <silent> <leader>li <Plug>(coc-implementation)
+nmap <silent> <leader>lf <Plug>(coc-references)
+
+" Remap for rename current word
+nmap <leader>lr <Plug>(coc-rename)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+
+" Language Server
+"let g:lsp_signs_enabled = 1
+"let g:lsp_diagnostics_enabled = 1
+"
+"function! s:on_lsp_buffer_enabled() abort
+"    setlocal omnifunc=lsp#complete
+"    setlocal signcolumn=yes
+"    nmap <buffer> gd <plug>(lsp-definition)
+"    nmap <buffer> <f2> <plug>(lsp-rename)
+"    " refer to doc to add more commands
+"endfunction
+"
+"" jump to definition
+"nnoremap <silent> gd :LspDefinition<CR>
 
 function! GitGrepWord()
   cgetexpr system("git grep -n '" . expand("<cword>") . "'")
@@ -151,28 +214,12 @@ endfunction
 command! -nargs=0 GitGrepWord :call GitGrepWord()
 nnoremap <silent> <Leader>gw :GitGrepWord<CR>
 
-" ctrlp settings to work like Control+T
-map <silent> <leader>ff :CtrlP<CR>
-map <silent> <leader>fr :CtrlPClearCache<CR>
-map <silent> <leader>fb :CtrlPBuffer<CR>
+" cscope settings
 
-let g:ctrlp_match_window = 'top,order:ttb,min:1,max:15,results:15'
-let g:ctrlp_prompt_mappings = {
-  \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
-  \ 'PrtSelectMove("k")':   ['<c-p>','<c-k>', '<up>'],
-  \ 'PrtHistory(-1)':       ['<c-j>'],
-  \ 'PrtHistory(1)':        ['<c-k>'],
-  \ }
+" add any database in current directory
+if filereadable("cscope.out")
+    cs add cscope.out
+endif
 
-" syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+" CTRL+\ => find (c)allers of function under cursor
+map <C-\> :cs find c <C-R>=expand("<cword>")<CR><CR>
