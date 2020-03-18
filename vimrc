@@ -8,6 +8,7 @@ Plug '~/.vim/local-plugins/language-mappings'
 
 Plug 'benmills/vimux', { 'tag': '1.0.0' }
 Plug 'ctrlpvim/ctrlp.vim', {'tag': '1.80'} " fuzzy finder
+Plug 'dense-analysis/ale', {'tag': 'v2.6.0'} " linting and fixing
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
 Plug 'janko-m/vim-test', {'tag': 'v2.1.0'}
 Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
@@ -17,8 +18,6 @@ Plug 'scrooloose/nerdtree', {'tag': '5.0.0'} " file tree
 Plug 'tomtom/tcomment_vim', {'tag': '3.08.1'} " commentin code
 Plug 'tpope/vim-fugitive', {'tag': 'v2.4'} " git
 Plug 'tpope/vim-ragtag', {'tag': 'v2.0'} " HTML
-
-Plug 'dense-analysis/ale'
 
 call plug#end()
 
