@@ -10,7 +10,7 @@ Plug 'benmills/vimux', { 'tag': '1.0.0' }
 Plug 'ctrlpvim/ctrlp.vim', {'tag': '1.80'} " fuzzy finder
 Plug 'dense-analysis/ale', {'tag': 'v2.6.0'} " linting and fixing
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
-Plug 'janko-m/vim-test', {'tag': 'v2.1.0'}
+Plug 'janko-m/vim-test', {'sha': '71ba2f81fc32a2b404f1d13ac60beaeb436ad40b'}
 Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
 Plug 'jtratner/vim-flavored-markdown', {'tag': 'v0.2'}
 Plug 'pangloss/vim-javascript', {'tag': '1.2.5.1'}
@@ -18,6 +18,7 @@ Plug 'scrooloose/nerdtree', {'tag': '5.0.0'} " file tree
 Plug 'tomtom/tcomment_vim', {'tag': '3.08.1'} " commentin code
 Plug 'tpope/vim-fugitive', {'tag': 'v2.4'} " git
 Plug 'tpope/vim-ragtag', {'tag': 'v2.0'} " HTML
+Plug 'dracula/vim', { 'as': 'dracula' } " color theme
 
 call plug#end()
 
@@ -106,9 +107,7 @@ map <silent> <LocalLeader>cc :TComment<CR>
 autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_us
 autocmd FileType tex setlocal spell spelllang=en_us
 
-if &t_Co == 256
-  colorscheme jellybeans
-endif
+colorscheme dracula
 
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd BufRead,InsertLeave * match ExtraWhitespace /\s\+$/
@@ -150,6 +149,7 @@ let g:ale_fixers = {
 let g:ale_linters = {
 \ 'python': ['pylint', 'mypy', 'pyls'],
 \}
+let g:ale_python_black_executable = $HOME . '/.vim/tools/py/bin/black'
 let g:ale_python_pyls_executable = $HOME . '/.vim/tools/py/bin/pyls'
 let g:ale_python_pyls_config = {
 \  'pyls': {
@@ -169,3 +169,7 @@ function! GitGrepWord()
 endfunction
 command! -nargs=0 GitGrepWord :call GitGrepWord()
 nnoremap <silent> <Leader>gw :GitGrepWord<CR>
+
+" allow project-specific dotfiles
+set exrc
+set secure
