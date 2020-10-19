@@ -19,6 +19,9 @@ Plug 'tomtom/tcomment_vim', {'tag': '3.08.1'} " commentin code
 Plug 'tpope/vim-fugitive', {'tag': 'v2.4'} " git
 Plug 'tpope/vim-ragtag', {'tag': 'v2.0'} " HTML
 Plug 'dracula/vim', { 'as': 'dracula' } " color theme
+Plug 'vim-airline/vim-airline', {'sha': '8608270bd39e9aa31bbdb8cd22b2ba776037feb6'}
+Plug 'vim-airline/vim-airline-themes', {'sha': 'e1b0d9f86cf89e84b15c459683fd72730e51a054'}
+Plug 'edkolev/tmuxline.vim', {'sha': '7001ab359f2bc699b7000c297a0d9e9a897b70cf'}
 
 call plug#end()
 
@@ -108,6 +111,7 @@ autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_us
 autocmd FileType tex setlocal spell spelllang=en_us
 
 colorscheme dracula
+let g:airline_theme='dracula'
 
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd BufRead,InsertLeave * match ExtraWhitespace /\s\+$/
