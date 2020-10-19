@@ -22,6 +22,7 @@ Plug 'dracula/vim', { 'as': 'dracula' } " color theme
 Plug 'vim-airline/vim-airline', {'sha': '8608270bd39e9aa31bbdb8cd22b2ba776037feb6'}
 Plug 'vim-airline/vim-airline-themes', {'sha': 'e1b0d9f86cf89e84b15c459683fd72730e51a054'}
 Plug 'edkolev/tmuxline.vim', {'sha': '7001ab359f2bc699b7000c297a0d9e9a897b70cf'}
+Plug 'edkolev/promptline.vim', {'sha': '106418570a0ecc33b35439e24b051be34f829b94'}
 
 call plug#end()
 
