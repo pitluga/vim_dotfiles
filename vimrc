@@ -7,7 +7,6 @@ Plug '~/.vim/local-plugins/color-schemes'
 Plug '~/.vim/local-plugins/language-mappings'
 
 Plug 'benmills/vimux', { 'tag': '1.0.0' }
-Plug 'ctrlpvim/ctrlp.vim', {'tag': '1.80'} " fuzzy finder
 Plug 'dense-analysis/ale', {'tag': 'v2.6.0'} " linting and fixing
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
 Plug 'janko-m/vim-test', {'sha': '71ba2f81fc32a2b404f1d13ac60beaeb436ad40b'}
@@ -18,11 +17,13 @@ Plug 'scrooloose/nerdtree', {'tag': '5.0.0'} " file tree
 Plug 'tomtom/tcomment_vim', {'tag': '3.08.1'} " commentin code
 Plug 'tpope/vim-fugitive', {'tag': 'v2.4'} " git
 Plug 'tpope/vim-ragtag', {'tag': 'v2.0'} " HTML
-Plug 'dracula/vim', { 'as': 'dracula' } " color theme
+Plug 'arcticicestudio/nord-vim'
 Plug 'vim-airline/vim-airline', {'sha': '8608270bd39e9aa31bbdb8cd22b2ba776037feb6'}
 Plug 'vim-airline/vim-airline-themes', {'sha': 'e1b0d9f86cf89e84b15c459683fd72730e51a054'}
 Plug 'edkolev/tmuxline.vim', {'sha': '7001ab359f2bc699b7000c297a0d9e9a897b70cf'}
 Plug 'edkolev/promptline.vim', {'sha': '106418570a0ecc33b35439e24b051be34f829b94'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -65,18 +66,10 @@ let NERDTreeIgnore=['\.pyc$', '\.o$', '\.class$', '__pycache__']
 map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
 map <silent> <LocalLeader>nf :NERDTreeFind<CR>
 
-" ctrlp
-let g:ctrlp_custom_ignore = 'node_modules\|_build\|deps\|elm-stuff|envs/default'
-let g:ctrlp_match_window = "top,order:ttb"
-let g:ctrlp_prompt_mappings = {
-  \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
-  \ 'PrtSelectMove("k")':   ['<c-p>','<c-k>', '<up>'],
-  \ 'PrtHistory(-1)':       ['<c-j>'],
-  \ 'PrtHistory(1)':        ['<c-k>'],
-\ }
-map <silent> <leader>ff :CtrlP<CR>
-map <silent> <leader>fb :CtrlPBuffer<CR>
-map <silent> <leader>fr :CtrlPClearCache<CR>
+" fzf
+let g:fzf_preview_window = [] " disable preview window
+map <silent> <leader>ff :GFiles<CR>
+map <silent> <leader>fb :Buffers<CR>
 
 " vim-test
 let g:test#strategy = "vimux"
@@ -111,8 +104,8 @@ map <silent> <LocalLeader>cc :TComment<CR>
 autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_us
 autocmd FileType tex setlocal spell spelllang=en_us
 
-colorscheme dracula
-let g:airline_theme='dracula'
+colorscheme nord
+let g:airline_theme='nord'
 
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd BufRead,InsertLeave * match ExtraWhitespace /\s\+$/
@@ -148,6 +141,7 @@ let g:ale_sign_column_always = 1
 let g:ale_linters_explicit = 1
 let g:ale_lint_on_text_changed = 1
 let g:ale_fix_on_save = 1
+" let g:ale_completion_enabled = 1 * this is kind of helpful, but needs tuning
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
@@ -156,6 +150,7 @@ let g:ale_linters = {
 \}
 let g:ale_python_black_executable = $HOME . '/.vim/tools/py/bin/black'
 let g:ale_python_pyls_executable = $HOME . '/.vim/tools/py/bin/pyls'
+let g:ale_python_isort_executable = $HOME . '/.vim/tools/py/bin/isort'
 let g:ale_python_pyls_config = {
 \  'pyls': {
 \    'plugins': {

@@ -10,6 +10,13 @@
 ~$ ~/.vim/tools/py/bin/pip install python-language-server
 ```
 
+## Updating Colorschemes
+
+```
+:PromptlineSnapshot airline ../dotfiles/promptline-<scheme>.sh
+:TmuxlineSnapshot ~/.dotfiles/tmuxline-<scheme>.conf
+```
+
 ## Shortcuts
 
 These are the custom shortcuts I've set up and use everyday. In parens is the
