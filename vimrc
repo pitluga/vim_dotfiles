@@ -9,7 +9,7 @@ Plug '~/.vim/local-plugins/language-mappings'
 Plug 'benmills/vimux', { 'tag': '1.0.0' }
 Plug 'dense-analysis/ale', {'tag': 'v2.6.0'} " linting and fixing
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
-Plug 'janko-m/vim-test', {'sha': '71ba2f81fc32a2b404f1d13ac60beaeb436ad40b'}
+Plug 'janko-m/vim-test', {'sha': '180c8ced850ed288bf7ce9c44c6b4451f995f275'}
 Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
 Plug 'jtratner/vim-flavored-markdown', {'tag': 'v0.2'}
 Plug 'pangloss/vim-javascript', {'tag': '1.2.5.1'}
