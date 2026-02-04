@@ -76,7 +76,7 @@ map <silent> <leader>fb :Buffers<CR>
 let g:test#strategy = "vimux"
 let g:test#preserve_screen = 0
 let g:test#python#runner = 'pytest'
-let g:test#python#pytest#executable = 'envs/default/bin/python -m pytest'
+let g:test#python#pytest#executable = '.venv/bin/pytest'
 let g:test#python#pytest#file_pattern = '^\(test_.*\|.*_test\)\.py$'
 
 nnoremap <silent> <leader>rf :wa<CR> :TestNearest<CR>
@@ -143,22 +143,50 @@ let g:ale_linters_explicit = 1
 let g:ale_lint_on_text_changed = 1
 let g:ale_fix_on_save = 1
 " let g:ale_completion_enabled = 1 * this is kind of helpful, but needs tuning
+" Find Python executable in project .venv or fall back to global tools
+function! FindPythonExecutable(exec_name)
+  " Try project-local .venv first
+  let l:project_root = ale#python#FindProjectRoot(bufnr(''))
+  if !empty(l:project_root)
+    let l:local_exec = l:project_root . '/.venv/bin/' . a:exec_name
+    if executable(l:local_exec)
+      return l:local_exec
+    endif
+  endif
+
+  " Fall back to global tools
+  return $HOME . '/.vim/tools/py/bin/' . a:exec_name
+endfunction
+
+" Set Python tool paths dynamically per buffer
+function! SetPythonToolPaths()
+  let g:ale_python_ruff_executable = FindPythonExecutable('ruff')
+  let g:ale_python_ruff_format_executable = FindPythonExecutable('ruff')
+endfunction
+
+autocmd FileType python call SetPythonToolPaths()
+
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ 'python': ['ruff'],
 \}
 let g:ale_linters = {
-\ 'python': ['pylint', 'mypy', 'pyls'],
+\ 'python': ['ruff', 'ty'],
 \}
-let g:ale_python_black_executable = $HOME . '/.vim/tools/py/bin/black'
-let g:ale_python_pyls_executable = $HOME . '/.vim/tools/py/bin/pyls'
-let g:ale_python_isort_executable = $HOME . '/.vim/tools/py/bin/isort'
-let g:ale_python_pyls_config = {
-\  'pyls': {
-\    'plugins': {
-\      'pycodestyle': { 'enabled': v:false },
-\    }
-\  },
-\}
+
+" ty LSP configuration
+function! GetTyExecutable(buffer) abort
+  return FindPythonExecutable('ty')
+endfunction
+
+let g:ale_linters_explicit = 1
+call ale#linter#Define('python', {
+\   'name': 'ty',
+\   'lsp': 'stdio',
+\   'executable': function('GetTyExecutable'),
+\   'command': '%e lsp',
+\   'project_root': function('ale#python#FindProjectRoot'),
+\})
 nnoremap <silent> gd :ALEGoToDefinition<CR>
 nnoremap <silent> gr :ALEFindReferences<CR>
 set omnifunc=ale#completion#OmniFunc
