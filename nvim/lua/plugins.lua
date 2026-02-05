@@ -1,40 +1,109 @@
 -- Plugin specifications for lazy.nvim
 return {
-  -- Color scheme
+  -- Color scheme (Lua-native gruvbox)
   {
-    "morhetz/gruvbox",
+    "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 1000,
-  },
-
-  -- File explorer (NERDTree)
-  {
-    "preservim/nerdtree",
-    keys = {
-      { "<LocalLeader>nt", ":NERDTreeToggle<CR>", desc = "Toggle NERDTree", silent = true },
-      { "<LocalLeader>nf", ":NERDTreeFind<CR>", desc = "Find in NERDTree", silent = true },
-    },
-    init = function()
-      vim.g.NERDTreeIgnore = { "\\.pyc$", "\\.o$", "\\.class$", "__pycache__" }
+    config = function()
+      require("gruvbox").setup({
+        contrast = "hard",
+      })
+      vim.cmd("colorscheme gruvbox")
     end,
   },
 
-  -- Fuzzy finder (fzf)
+  -- File explorer (nvim-tree - replaces NERDTree)
   {
-    "junegunn/fzf",
-    build = function()
-      vim.fn["fzf#install"]()
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { "<LocalLeader>nt", ":NvimTreeToggle<CR>", desc = "Toggle NvimTree", silent = true },
+      { "<LocalLeader>nf", ":NvimTreeFindFile<CR>", desc = "Find in NvimTree", silent = true },
+    },
+    config = function()
+      require("nvim-tree").setup({
+        filters = {
+          custom = { "\\.pyc$", "\\.o$", "\\.class$", "__pycache__" },
+        },
+        view = {
+          width = 30,
+        },
+      })
     end,
   },
+
+  -- Fuzzy finder (Telescope - replaces fzf)
   {
-    "junegunn/fzf.vim",
-    dependencies = { "junegunn/fzf" },
-    keys = {
-      { "<leader>ff", ":GFiles<CR>", desc = "Fuzzy find files", silent = true },
-      { "<leader>fb", ":Buffers<CR>", desc = "Fuzzy find buffers", silent = true },
+    "nvim-telescope/telescope.nvim",
+    branch = "0.1.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
-    init = function()
-      vim.g.fzf_preview_window = {}
+    keys = {
+      { "<leader>ff", function() require("telescope.builtin").git_files() end, desc = "Find git files", silent = true },
+      { "<leader>fb", function() require("telescope.builtin").buffers() end, desc = "Find buffers", silent = true },
+      { "<leader>fg", function() require("telescope.builtin").live_grep() end, desc = "Live grep", silent = true },
+      { "<leader>fh", function() require("telescope.builtin").help_tags() end, desc = "Help tags", silent = true },
+    },
+    config = function()
+      local telescope = require("telescope")
+      telescope.setup({
+        defaults = {
+          previewer = false,
+          layout_config = {
+            prompt_position = "top",
+          },
+          sorting_strategy = "ascending",
+        },
+        pickers = {
+          git_files = {
+            previewer = false,
+          },
+          buffers = {
+            previewer = false,
+          },
+        },
+      })
+      telescope.load_extension("fzf")
+    end,
+  },
+
+  -- Treesitter (modern syntax highlighting - replaces vim-javascript, vim-flavored-markdown)
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = {
+          "lua",
+          "vim",
+          "vimdoc",
+          "javascript",
+          "typescript",
+          "python",
+          "go",
+          "rust",
+          "ruby",
+          "markdown",
+          "markdown_inline",
+          "json",
+          "yaml",
+          "html",
+          "css",
+          "bash",
+          "solidity",
+        },
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+        indent = {
+          enable = true,
+        },
+      })
     end,
   },
 
@@ -60,29 +129,16 @@ return {
     end,
   },
 
-  -- Buffer explorer
+  -- Commenting (Comment.nvim - replaces tcomment)
   {
-    "jlanzarotta/bufexplorer",
-  },
-
-  -- Markdown
-  {
-    "jtratner/vim-flavored-markdown",
-  },
-
-  -- JavaScript
-  {
-    "pangloss/vim-javascript",
-    ft = "javascript",
-  },
-
-  -- Commenting
-  {
-    "tomtom/tcomment_vim",
+    "numToStr/Comment.nvim",
     keys = {
-      { "<LocalLeader>cc", ":TComment<CR>", desc = "Toggle comment", silent = true },
-      { "<LocalLeader>cc", ":TComment<CR>", desc = "Toggle comment", silent = true, mode = "v" },
+      { "<LocalLeader>cc", function() require("Comment.api").toggle.linewise.current() end, desc = "Toggle comment", silent = true },
+      { "<LocalLeader>cc", "<Plug>(comment_toggle_linewise_visual)", desc = "Toggle comment", silent = true, mode = "v" },
     },
+    config = function()
+      require("Comment").setup()
+    end,
   },
 
   -- Git
@@ -104,24 +160,27 @@ return {
     end,
   },
 
-  -- Status line
+  -- Status line (lualine - replaces vim-airline)
   {
-    "vim-airline/vim-airline",
-    dependencies = { "vim-airline/vim-airline-themes" },
-    init = function()
-      vim.g.airline_theme = "gruvbox"
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("lualine").setup({
+        options = {
+          theme = "gruvbox",
+          component_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
+        },
+        sections = {
+          lualine_a = { "mode" },
+          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_c = { "filename" },
+          lualine_x = { "encoding", "fileformat", "filetype" },
+          lualine_y = { "progress" },
+          lualine_z = { "location" },
+        },
+      })
     end,
-  },
-  {
-    "vim-airline/vim-airline-themes",
-  },
-
-  -- Tmux integration
-  {
-    "edkolev/tmuxline.vim",
-  },
-  {
-    "edkolev/promptline.vim",
   },
 
   -- Linting and LSP (ALE)

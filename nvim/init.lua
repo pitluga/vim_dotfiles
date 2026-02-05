@@ -133,7 +133,9 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
   pattern = { "*.md", "*.markdown" },
   callback = function()
-    vim.opt_local.filetype = "ghmarkdown"
+    vim.opt_local.filetype = "markdown"
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = "en_us"
   end,
 })
 
@@ -187,8 +189,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Colorscheme (set after plugins load)
-vim.cmd("colorscheme gruvbox")
+-- Colorscheme is set by gruvbox.nvim plugin
 
 -- Whitespace highlighting
 vim.api.nvim_create_autocmd("InsertEnter", {
