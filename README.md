@@ -1,5 +1,7 @@
 # Vim8 Dotfiles
 
+## Vim Setup
+
 ```bash
 ~$ ln -s ./vim ~/.vim
 ~$ ln -s ./vimrc ~/.vimrc
@@ -8,6 +10,14 @@
 # install pyls for python code navigation
 ~$ python3 -m venv ~/.vim/tools/py
 ~$ ~/.vim/tools/py/bin/pip install python-language-server
+```
+
+## Neovim Setup
+
+```bash
+~$ ln -s /path/to/vim_dotfiles/nvim ~/.config/nvim
+~$ nvim
+# lazy.nvim will auto-install on first launch
 ```
 
 ## Updating Colorschemes
