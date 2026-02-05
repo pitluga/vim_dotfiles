@@ -7,7 +7,7 @@ Plug '~/.vim/local-plugins/color-schemes'
 Plug '~/.vim/local-plugins/language-mappings'
 
 Plug 'preservim/vimux', {'sha': '614f0bb1fb598f97accdcea71d5f7b18d7d62436'}
-Plug 'dense-analysis/ale', {'tag': 'v2.6.0'} " linting and fixing
+Plug 'dense-analysis/ale', {'tag': 'v4.0.0'} " linting and fixing
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
 Plug 'janko-m/vim-test', {'sha': 'c174652ef8e4959628a52e3134f102923b7a6f0d'}
 Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
@@ -52,6 +52,8 @@ autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType tex setlocal textwidth=78
 autocmd Filetype go setlocal noexpandtab
 autocmd FileType rust setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType solidity setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd BufNewFile,BufRead *.sol setlocal filetype=solidity
 autocmd BufNewFile,BufRead *.txt setlocal textwidth=78
 autocmd BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 
@@ -169,9 +171,11 @@ autocmd FileType python call SetPythonToolPaths()
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \ 'python': ['ruff'],
+\ 'solidity': ['forge'],
 \}
 let g:ale_linters = {
 \ 'python': ['ruff', 'ty'],
+\ 'solidity': ['forge_lsp'],
 \}
 
 " ty LSP configuration
@@ -184,8 +188,41 @@ call ale#linter#Define('python', {
 \   'name': 'ty',
 \   'lsp': 'stdio',
 \   'executable': function('GetTyExecutable'),
-\   'command': '%e lsp',
+\   'command': '%e server',
 \   'project_root': function('ale#python#FindProjectRoot'),
+\})
+
+" Forge LSP configuration for Solidity
+function! GetForgeExecutable(buffer) abort
+  let l:project_root = GetForgeProjectRoot(a:buffer)
+  echom 'Forge debug - project_root: ' . l:project_root
+  if !empty(l:project_root)
+    let l:forge_path = l:project_root . '/.foundry/bin/forge'
+    echom 'Forge debug - checking path: ' . l:forge_path
+    if executable(l:forge_path)
+      echom 'Forge debug - using local forge: ' . l:forge_path
+      return l:forge_path
+    endif
+  endif
+  " Fall back to system forge if available
+  echom 'Forge debug - using system forge'
+  return 'forge'
+endfunction
+
+function! GetForgeProjectRoot(buffer) abort
+  let l:foundry_file = ale#path#FindNearestFile(a:buffer, 'foundry.toml')
+  if !empty(l:foundry_file)
+    return fnamemodify(l:foundry_file, ':h')
+  endif
+  return ''
+endfunction
+
+call ale#linter#Define('solidity', {
+\   'name': 'forge_lsp',
+\   'lsp': 'stdio',
+\   'executable': function('GetForgeExecutable'),
+\   'command': '%e lsp',
+\   'project_root': function('GetForgeProjectRoot'),
 \})
 nnoremap <silent> gd :ALEGoToDefinition<CR>
 nnoremap <silent> gr :ALEFindReferences<CR>
