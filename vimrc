@@ -6,10 +6,10 @@ call plug#begin('~/.vim/plugged')
 Plug '~/.vim/local-plugins/color-schemes'
 Plug '~/.vim/local-plugins/language-mappings'
 
-Plug 'benmills/vimux', { 'tag': '1.0.0' }
+Plug 'preservim/vimux', {'sha': '614f0bb1fb598f97accdcea71d5f7b18d7d62436'}
 Plug 'dense-analysis/ale', {'tag': 'v2.6.0'} " linting and fixing
 Plug 'fatih/vim-go', {'tag': 'v1.18'}
-Plug 'janko-m/vim-test', {'sha': '180c8ced850ed288bf7ce9c44c6b4451f995f275'}
+Plug 'janko-m/vim-test', {'sha': 'c174652ef8e4959628a52e3134f102923b7a6f0d'}
 Plug 'jlanzarotta/bufexplorer', {'tag': 'v7.4.19'}
 Plug 'jtratner/vim-flavored-markdown', {'tag': 'v0.2'}
 Plug 'pangloss/vim-javascript', {'tag': '1.2.5.1'}
