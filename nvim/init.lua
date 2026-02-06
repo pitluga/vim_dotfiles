@@ -37,7 +37,7 @@ vim.opt.wrap = true
 vim.opt.directory = "/tmp//"
 vim.opt.scrolloff = 5
 vim.opt.foldenable = false
-vim.opt.mouse = ""
+vim.opt.mouse = "a"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.wildignore:append({ "*.pyc", "*.o", "*.class" })
