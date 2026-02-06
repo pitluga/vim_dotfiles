@@ -36,18 +36,17 @@ mnemonic I use to remember them :D
 * `\rb` - run all the tests in the current file (run buffer)
 * `\rf` - run the test under the cursor (run focused)
 * `\rl` - run the last test, can do it from anywhere (run last)
+* `\ra` - run all tests (run all)
 
-### NERDTree (file explorer)
-* `\nt` - toggle viewing NERDTree (nerd toggle)
-* `\nf` - reveal the current file in NERDTree (nerd find)
+### nvim-tree (file explorer)
+* `\nt` - toggle viewing nvim-tree (nerd toggle)
+* `\nf` - reveal the current file in nvim-tree (nerd find)
 
-### Contror-P (fuzzy finding files)
+### Telescope (fuzzy finding)
 * `\ff` - open the prompt to start searching for a file (fuzzy files)
 * `\fb` - search open buffers (fuzzy buffers)
-* `\fr` - clear the file cache (fuzzy refresh)
-
-### Buffer Explorer (currently open files)
-* `\be` - open buffer explorer
+* `\fg` - live grep across files (fuzzy grep)
+* `\fh` - search help tags (fuzzy help)
 
 ### Code Navigation
 * `gd` - go to definition

@@ -223,7 +223,7 @@ return {
       -- Linters
       vim.g.ale_linters = {
         python = { "ruff", "ty" },
-        solidity = { "forge_lsp" },
+        solidity = { },
       }
 
       -- Define ty linter
@@ -237,39 +237,10 @@ return {
         project_root = vim.fn["ale#python#FindProjectRoot"],
       })
 
-      -- Helper function for forge project root
-      local function get_forge_project_root(buffer)
-        local foundry_file = vim.fn["ale#path#FindNearestFile"](buffer, "foundry.toml")
-        if foundry_file ~= "" then
-          return vim.fn.fnamemodify(foundry_file, ":h")
-        end
-        return ""
-      end
-
-      -- Helper function for forge executable
-      local function get_forge_executable(buffer)
-        local project_root = get_forge_project_root(buffer)
-        if project_root ~= "" then
-          local forge_path = project_root .. "/.foundry/bin/forge"
-          if vim.fn.executable(forge_path) == 1 then
-            return forge_path
-          end
-        end
-        return "forge"
-      end
-
-      -- Define forge LSP linter
-      vim.fn["ale#linter#Define"]("solidity", {
-        name = "forge_lsp",
-        lsp = "stdio",
-        executable = get_forge_executable,
-        command = "%e lsp",
-        project_root = get_forge_project_root,
-      })
-
       -- LSP keymaps
       vim.keymap.set("n", "gd", ":ALEGoToDefinition<CR>", { silent = true })
       vim.keymap.set("n", "gr", ":ALEFindReferences<CR>", { silent = true })
+      vim.keymap.set("n", "gh", ":ALEHover<CR>", { silent = true })
 
       -- Omni function
       vim.opt.omnifunc = "ale#completion#OmniFunc"
