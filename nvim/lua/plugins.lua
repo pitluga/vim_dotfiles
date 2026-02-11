@@ -42,7 +42,7 @@ return {
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
     keys = {
-      { "<leader>ff", function() require("telescope.builtin").git_files() end, desc = "Find git files", silent = true },
+      { "<leader>ff", function() require("telescope.builtin").find_files() end, desc = "Find files", silent = true },
       { "<leader>fb", function() require("telescope.builtin").buffers() end, desc = "Find buffers", silent = true },
       { "<leader>fg", function() require("telescope.builtin").live_grep() end, desc = "Live grep", silent = true },
       { "<leader>fh", function() require("telescope.builtin").help_tags() end, desc = "Help tags", silent = true },
