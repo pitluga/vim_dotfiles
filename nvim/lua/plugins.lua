@@ -145,6 +145,23 @@ return {
   {
     "tpope/vim-fugitive",
   },
+  {
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<LocalLeader>dt", function()
+        local lib = require("diffview.lib")
+        if next(lib.views) then
+          vim.cmd("DiffviewClose")
+        else
+          vim.cmd("DiffviewOpen")
+        end
+      end, desc = "Toggle Diffview", silent = true },
+    },
+    config = function()
+      require("diffview").setup()
+    end,
+  },
 
   -- HTML
   {

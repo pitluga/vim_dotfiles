@@ -48,6 +48,9 @@ mnemonic I use to remember them :D
 * `\fg` - live grep across files (fuzzy grep)
 * `\fh` - search help tags (fuzzy help)
 
+### Git
+* `\dt` - toggle the diff view (diff toggle)
+
 ### Code Navigation
 * `gd` - go to definition
 * `gr` - display all references
