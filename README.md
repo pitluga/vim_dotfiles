@@ -42,6 +42,21 @@ mnemonic I use to remember them :D
 * `\nt` - toggle viewing nvim-tree (nerd toggle)
 * `\nf` - reveal the current file in nvim-tree (nerd find)
 
+Built-in shortcuts (when focused in the nvim-tree window):
+* `P` - move cursor to parent directory
+* `-` - change tree root to parent directory
+* `o` or `<CR>` - open file / toggle directory
+* `a` - create a new file or directory (end with `/` for directory)
+* `d` - delete file or directory
+* `r` - rename
+* `x` - cut
+* `c` - copy
+* `p` - paste
+* `R` - refresh the tree
+* `H` - toggle hidden/dotfiles
+* `I` - toggle gitignored files
+* `g?` - show help with all keybindings
+
 ### Telescope (fuzzy finding)
 * `\ff` - open the prompt to start searching for a file (fuzzy files)
 * `\fb` - search open buffers (fuzzy buffers)
