@@ -200,7 +200,7 @@ return {
     end,
   },
 
-  -- Linting and LSP (ALE)
+  -- Linting (ALE - ruff only)
   {
     "dense-analysis/ale",
     config = function()
@@ -208,7 +208,6 @@ return {
       vim.g.ale_linters_explicit = 1
       vim.g.ale_lint_on_text_changed = 1
       vim.g.ale_fix_on_save = 1
-      vim.g.ale_completion_enabled = 1
 
       -- Helper function to find Python executable
       local function find_python_executable(exec_name)
@@ -240,29 +239,63 @@ return {
 
       -- Linters
       vim.g.ale_linters = {
-        python = { "ruff", "ty" },
+        python = { "ruff" },
         solidity = { },
       }
+    end,
+  },
 
-      -- Define ty linter
-      vim.fn["ale#linter#Define"]("python", {
-        name = "ty",
-        lsp = "stdio",
-        executable = function(buffer)
-          return find_python_executable("ty")
+  -- Completion (blink.cmp)
+  {
+    "saghen/blink.cmp",
+    version = "1.*",
+    opts = {
+      keymap = { preset = "default" },
+      completion = { documentation = { auto_show = true } },
+      sources = { default = { "lsp" } },
+    },
+  },
+
+  -- Native LSP for ty (Python type checker)
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      -- Helper function to find Python executable
+      local function find_python_executable(exec_name)
+        local root = vim.fs.root(0, { "pyproject.toml", ".git" }) or vim.fn.getcwd()
+        local local_exec = root .. "/.venv/bin/" .. exec_name
+        if vim.fn.executable(local_exec) == 1 then
+          return local_exec
+        end
+        return vim.fn.expand("~/.vim/tools/py/bin/") .. exec_name
+      end
+
+      -- Start ty LSP for Python files
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "python",
+        callback = function()
+          vim.lsp.start({
+            name = "ty",
+            cmd = { find_python_executable("ty"), "server" },
+            root_dir = vim.fs.root(0, { "pyproject.toml", ".git" }),
+            settings = {
+              ty = {
+                completions = { autoImport = true },
+              },
+            },
+          })
         end,
-        command = "%e server",
-        project_root = vim.fn["ale#python#FindProjectRoot"],
       })
 
-      -- LSP keymaps
-      vim.keymap.set("n", "gd", ":ALEGoToDefinition<CR>", { silent = true })
-      vim.keymap.set("n", "gr", ":ALEFindReferences<CR>", { silent = true })
-      vim.keymap.set("n", "gh", ":ALEHover<CR>", { silent = true })
-
-      -- Omni function
-      vim.opt.omnifunc = "ale#completion#OmniFunc"
-      vim.keymap.set("i", "<C-Space>", "<C-x><C-o>", { silent = true })
+      -- LSP keymaps on attach
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local opts = { buffer = args.buf, silent = true }
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+          vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
+        end,
+      })
     end,
   },
 }

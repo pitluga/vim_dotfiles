@@ -225,19 +225,6 @@ vim.opt.undodir = vim.fn.expand("~/.config/nvim/undodir")
 vim.opt.undofile = true
 vim.opt.undoreload = 10000
 
--- Auto complete popup navigation
-vim.keymap.set("i", "<Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
-end, { expr = true })
-
-vim.keymap.set("i", "<S-Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
-end, { expr = true })
-
-vim.keymap.set("i", "<CR>", function()
-  return vim.fn.pumvisible() == 1 and "<C-y>" or "<CR>"
-end, { expr = true })
-
 -- GitGrep function
 vim.api.nvim_create_user_command("GitGrepWord", function()
   local word = vim.fn.expand("<cword>")
