@@ -208,6 +208,7 @@ return {
       vim.g.ale_linters_explicit = 1
       vim.g.ale_lint_on_text_changed = 1
       vim.g.ale_fix_on_save = 1
+      vim.g.ale_completion_enabled = 1
 
       -- Helper function to find Python executable
       local function find_python_executable(exec_name)
@@ -261,6 +262,7 @@ return {
 
       -- Omni function
       vim.opt.omnifunc = "ale#completion#OmniFunc"
+      vim.keymap.set("i", "<C-Space>", "<C-x><C-o>", { silent = true })
     end,
   },
 }
