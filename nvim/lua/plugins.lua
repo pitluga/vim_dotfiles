@@ -233,7 +233,7 @@ return {
       -- Fixers
       vim.g.ale_fixers = {
         ["*"] = { "remove_trailing_lines", "trim_whitespace" },
-        python = { "ruff" },
+        python = { "ruff", "ruff_format" },
         solidity = { "forge" },
       }
 
@@ -250,7 +250,7 @@ return {
     "saghen/blink.cmp",
     version = "1.*",
     opts = {
-      keymap = { preset = "default" },
+      keymap = { preset = "default", ["<CR>"] = { "accept", "fallback" } },
       completion = { documentation = { auto_show = true } },
       sources = { default = { "lsp" } },
     },
