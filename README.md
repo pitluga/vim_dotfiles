@@ -66,6 +66,15 @@ Built-in shortcuts (when focused in the nvim-tree window):
 ### Git
 * `\dt` - toggle the diff view (diff toggle)
 
+### Completions (blink.cmp)
+* `<CR>` - accept the selected completion
+* `<C-e>` - cancel the completion menu
+* `<C-n>` or `<Tab>` - select next item
+* `<C-p>` or `<S-Tab>` - select previous item
+* `<C-space>` - manually trigger completion
+* `<C-f>` - scroll documentation down
+* `<C-b>` - scroll documentation up
+
 ### Code Navigation
 * `gd` - go to definition
 * `gr` - display all references
