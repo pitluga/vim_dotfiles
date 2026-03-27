@@ -60,6 +60,7 @@ Built-in shortcuts (when focused in the nvim-tree window):
 ### Telescope (fuzzy finding)
 * `\ff` - open the prompt to start searching for a file (fuzzy files)
 * `\fb` - search open buffers (fuzzy buffers)
+* `\be` - search open buffers (buffer explorer)
 * `\fg` - live grep across files (fuzzy grep)
 * `\fh` - search help tags (fuzzy help)
 
